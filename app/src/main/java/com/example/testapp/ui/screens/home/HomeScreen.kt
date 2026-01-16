@@ -1,4 +1,4 @@
-package com.example.testapp.ui.screens
+package com.example.testapp.ui.screens.home
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -65,6 +65,22 @@ fun HomeScreen() {
 }
 
 @Composable
+fun GreetingKamilla() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Hi, Kamilla",
+            style = MaterialTheme.typography.headlineLarge,
+        )
+        Text(
+            text = "Hi, Kamilla. Love you very much!",
+            color = MaterialTheme.colorScheme.subtitle,
+            style = MaterialTheme.typography.headlineMedium
+        )
+    }
+}
+@Composable
 fun StudyAppHeader(
     title: String = "",
     subtitle: String = "",
@@ -84,22 +100,7 @@ fun StudyAppHeader(
     }
 }
 
-@Composable
-fun GreetingKamilla() {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = "Hi, Kamilla",
-            style = MaterialTheme.typography.headlineLarge,
-        )
-        Text(
-            text = "Hi, Kamilla. Love you very much!",
-            color = MaterialTheme.colorScheme.subtitle,
-            style = MaterialTheme.typography.headlineMedium
-        )
-    }
-}
+
 
 @Composable
 fun MainScreenButtons() {
