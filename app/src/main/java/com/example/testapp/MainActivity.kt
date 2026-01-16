@@ -20,18 +20,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TestAppTheme {
-                Scaffold(
-                    content = { innerPadding: PaddingValues ->
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier
-                                .padding(innerPadding)
-                                .fillMaxSize()
-                        ) {
-                            RegistrationScreen()
-                        }
-                    }
-                )
+
+                RegistrationScreen()
+
             }
         }
     }
