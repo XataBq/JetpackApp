@@ -2,12 +2,15 @@ package com.example.testapp.ui.navigation
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavArgument
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.testapp.ui.screens.home.HomeScreen
 import com.example.testapp.ui.screens.register.RegistrationScreen
@@ -39,9 +42,8 @@ fun NavGraphBuilder.authGraph(
     ) {
         composable(Screen.Registration.route) {
             RegistrationScreen(
-                onNavigateHome = {email ->
-                    val encoded = Uri.encode(email)
-                    navController.navigate(Screen.Home.createRoute(encoded)) {
+                onNavigateHome = {encodedEmail ->
+                    navController.navigate(Screen.Home.createRoute(encodedEmail)) {
                         popUpTo(Graph.Auth.route) {
                             inclusive = true
                             saveState = true
@@ -62,10 +64,11 @@ fun NavGraphBuilder.mainGraph(
         route = Graph.Main.route,
         startDestination = Screen.Home.route
     ){
-        composable(Screen.Home.route) {backStackEntry ->
-            val email = backStackEntry.arguments?.getString("email").orEmpty()
+        composable(
+            route = Screen.Home.route,
+            arguments = listOf(navArgument("email"){type = NavType.StringType})
+        ) {
             HomeScreen(
-                email = Uri.decode(email),
                 onLogout = {
                     navController.navigate(Graph.Auth.route) {
                         popUpTo(Graph.Main.route){inclusive = true}
