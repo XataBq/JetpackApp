@@ -1,5 +1,6 @@
 package com.example.testapp.ui.navigation
 
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -26,21 +27,6 @@ fun AppNavGraph() {
         mainGraph(
             navController = navController
         )
-
-//        composable(Screen.Registration.route) {
-//            RegistrationScreen(
-//                onNavigateHome = {
-//                    navController.navigate(Screen.Home.route) {
-//                        popUpTo("registration"){inclusive = true}
-//                        launchSingleTop = true
-//                    }
-//                }
-//            )
-//        }
-//
-//        composable(Screen.Home.route) {
-//            HomeScreen()
-//        }
     }
 }
 
@@ -53,8 +39,9 @@ fun NavGraphBuilder.authGraph(
     ) {
         composable(Screen.Registration.route) {
             RegistrationScreen(
-                onNavigateHome = {
-                    navController.navigate(Graph.Main.route) {
+                onNavigateHome = {email ->
+                    val encoded = Uri.encode(email)
+                    navController.navigate(Screen.Home.createRoute(encoded)) {
                         popUpTo(Graph.Auth.route) {
                             inclusive = true
                             saveState = true
@@ -75,8 +62,10 @@ fun NavGraphBuilder.mainGraph(
         route = Graph.Main.route,
         startDestination = Screen.Home.route
     ){
-        composable(Screen.Home.route) {
+        composable(Screen.Home.route) {backStackEntry ->
+            val email = backStackEntry.arguments?.getString("email").orEmpty()
             HomeScreen(
+                email = Uri.decode(email),
                 onLogout = {
                     navController.navigate(Graph.Auth.route) {
                         popUpTo(Graph.Main.route){inclusive = true}

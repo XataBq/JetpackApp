@@ -10,6 +10,8 @@ sealed class Screen (val route: String){
     // позже: Login, Forgot
 
     //main
-    data object Home: Screen("home")
+    data object Home: Screen("home/{email}"){
+        fun createRoute(email:String) = "home/$email"
+    }
     // позже: Profile, Settings
 }

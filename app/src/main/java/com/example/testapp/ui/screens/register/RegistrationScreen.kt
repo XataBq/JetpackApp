@@ -49,7 +49,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RegistrationScreen(
-    onNavigateHome: () -> Unit,
+    onNavigateHome: (String) -> Unit,
     viewModel: RegistrationViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -80,7 +80,7 @@ fun RegistrationScreen(
                     }
                 }
 
-                RegistrationEvent.NavigateHome -> onNavigateHome()
+                RegistrationEvent.NavigateHome -> onNavigateHome(uiState.email)
             }
         }
     }

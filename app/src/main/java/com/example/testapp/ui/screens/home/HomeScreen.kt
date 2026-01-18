@@ -42,7 +42,8 @@ import com.example.testapp.ui.theme.subtitle
 
 @Composable
 fun HomeScreen(
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    email: String
 ) {
     TestAppTheme {
         Scaffold(
@@ -60,6 +61,8 @@ fun HomeScreen(
                     MainScreenButtons(onLogout)
                     Spacer(modifier = Modifier.height(30.dp))
                     StartImageButton()
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(text = email)
                 }
             }
         )
