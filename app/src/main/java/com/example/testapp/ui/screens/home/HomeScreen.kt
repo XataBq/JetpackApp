@@ -1,5 +1,6 @@
 package com.example.testapp.ui.screens.home
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,11 +38,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.testapp.R
 import com.example.testapp.ui.theme.subtitle
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onLogout: () -> Unit,
+    viewModel: HomeViewModel = viewModel()
+) {
     TestAppTheme {
         Scaffold(
             content = { innerPadding ->
@@ -55,9 +60,11 @@ fun HomeScreen() {
                 ) {
                     GreetingKamilla()
                     Spacer(modifier = Modifier.height(30.dp))
-                    MainScreenButtons()
+                    MainScreenButtons(onLogout)
                     Spacer(modifier = Modifier.height(30.dp))
                     StartImageButton()
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Text(text = "${Uri.decode(viewModel.email)}")
                 }
             }
         )
@@ -100,10 +107,10 @@ fun StudyAppHeader(
     }
 }
 
-
-
 @Composable
-fun MainScreenButtons() {
+fun MainScreenButtons(
+    onLogout: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -119,12 +126,12 @@ fun MainScreenButtons() {
             Text("Kami")
         }
         Button(
-            onClick = {},
+            onClick = onLogout,
             modifier = Modifier
                 .padding(horizontal = 5.dp)
                 .weight(1F)
         ) {
-            Text("My Kami")
+            Text("Logout")
         }
         Button(
             onClick = {},
@@ -185,25 +192,25 @@ fun GreetingKamillaPreview() {
     GreetingKamilla()
 }
 
-@Composable
-@Preview(showBackground = true)
-fun MainScreenButtonsPreviewLight() {
-    TestAppTheme (
-        darkTheme = false
-    ){
-        MainScreenButtons()
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun MainScreenButtonsPreviewDark() {
-    TestAppTheme(
-        darkTheme = true
-    ) {
-        MainScreenButtons()
-    }
-}
+//@Composable
+//@Preview(showBackground = true)
+//fun MainScreenButtonsPreviewLight() {
+//    TestAppTheme (
+//        darkTheme = false
+//    ){
+//        MainScreenButtons()
+//    }
+//}
+//
+//@Composable
+//@Preview(showBackground = true)
+//fun MainScreenButtonsPreviewDark() {
+//    TestAppTheme(
+//        darkTheme = true
+//    ) {
+//        MainScreenButtons()
+//    }
+//}
 
 @Composable
 @Preview(showBackground = true)
