@@ -9,7 +9,8 @@ sealed class Graph(val route: String) {
 sealed class Screen (val route: String){
     //auth
     data object Registration: Screen("registration")
-    // позже: Login, Forgot
+    data object Login: Screen("login")
+    // позже: Forgot
 
     //main
     data object Home: Screen("home/{email}"){

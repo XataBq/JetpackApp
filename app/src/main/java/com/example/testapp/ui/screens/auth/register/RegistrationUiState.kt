@@ -1,4 +1,4 @@
-package com.example.testapp.ui.screens.register
+package com.example.testapp.ui.screens.auth.register
 
 import com.example.testapp.ui.models.ValidationState
 

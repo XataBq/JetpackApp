@@ -107,8 +107,6 @@ fun StudyAppHeader(
     }
 }
 
-
-
 @Composable
 fun MainScreenButtons(
     onLogout: () -> Unit

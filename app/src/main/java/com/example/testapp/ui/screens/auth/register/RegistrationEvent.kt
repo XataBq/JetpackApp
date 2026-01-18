@@ -1,4 +1,4 @@
-package com.example.testapp.ui.screens.register
+package com.example.testapp.ui.screens.auth.register
 
 sealed class RegistrationEvent {
 //    data class ShowSnackbar(val message: String): RegistrationEvent()

@@ -1,10 +1,11 @@
-package com.example.testapp.ui.screens.register
+package com.example.testapp.ui.screens.auth
 
 import android.util.Patterns.EMAIL_ADDRESS
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testapp.ui.models.ValidationState
+import com.example.testapp.ui.screens.auth.register.RegistrationEvent
+import com.example.testapp.ui.screens.auth.register.RegistrationUiState
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class RegistrationViewModel : ViewModel() {
+class AuthViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<RegistrationUiState>(RegistrationUiState())
     private val _events = MutableSharedFlow<RegistrationEvent>(
         replay = 0,
@@ -57,13 +58,46 @@ class RegistrationViewModel : ViewModel() {
         _uiState.update { it.copy(validationState = newValidation) }
 
         viewModelScope.launch {
-            when(newValidation) {
+            when (newValidation) {
                 is ValidationState.Error -> {
                     _events.tryEmit(RegistrationEvent.RegisteredError(newValidation.message))
                 }
+
                 is ValidationState.Success -> {
                     _events.emit(RegistrationEvent.NavigateHome)
                 }
+
+                ValidationState.None -> Unit
+            }
+        }
+    }
+
+    fun onLoginClick() {
+        val email = _uiState.value.email
+        val isValid = EMAIL_ADDRESS.matcher(email).matches()
+
+        val newValidation = if (email == testEmail) {
+            ValidationState.Success(
+                "Добро пожаловать, ${email.split("@")[0]}!"
+            )
+        } else {
+            ValidationState.Error(
+                "Некорректный Email адрес. Проверьте правильность введенных данных"
+            )
+        }
+
+        _uiState.update { it.copy(validationState = newValidation) }
+
+        viewModelScope.launch {
+            when (newValidation) {
+                is ValidationState.Error -> {
+                    _events.tryEmit(RegistrationEvent.RegisteredError(newValidation.message))
+                }
+
+                is ValidationState.Success -> {
+                    _events.emit(RegistrationEvent.NavigateHome)
+                }
+
                 ValidationState.None -> Unit
             }
         }
