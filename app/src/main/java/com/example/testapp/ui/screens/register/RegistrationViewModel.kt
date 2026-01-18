@@ -62,7 +62,7 @@ class RegistrationViewModel : ViewModel() {
                     _events.tryEmit(RegistrationEvent.RegisteredError(newValidation.message))
                 }
                 is ValidationState.Success -> {
-                    _events.tryEmit(RegistrationEvent.RegisteredSuccess(newValidation.message))
+                    _events.emit(RegistrationEvent.NavigateHome)
                 }
                 ValidationState.None -> Unit
             }

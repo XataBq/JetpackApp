@@ -49,6 +49,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun RegistrationScreen(
+    onNavigateHome: () -> Unit,
     viewModel: RegistrationViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -78,15 +79,8 @@ fun RegistrationScreen(
                         )
                     }
                 }
-                is RegistrationEvent.RegisteredSuccess -> {
-                    scope.launch {
-                        snackbarHostState.currentSnackbarData?.dismiss()
-                        snackbarHostState.showSnackbar(
-                            message = event.message,
-                            duration = SnackbarDuration.Short,
-                            )
-                    }
-                }
+
+                RegistrationEvent.NavigateHome -> onNavigateHome()
             }
         }
     }
