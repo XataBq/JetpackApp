@@ -5,17 +5,12 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -29,7 +24,6 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.testapp.ui.components.ValidationBlock
@@ -48,10 +42,11 @@ fun RegistrationScreen(
     val uiState by viewModel.uiState.collectAsState()
     val isEmailFormatValid: Boolean by remember {
         derivedStateOf {
-            if (uiState.email.isNotEmpty())
+            if (uiState.email.isNotEmpty()) {
                 EMAIL_ADDRESS.matcher(uiState.email).matches()
-            else
+            } else {
                 true
+            }
         }
     }
     val snackbarHostState = remember { SnackbarHostState() }
@@ -68,7 +63,7 @@ fun RegistrationScreen(
                         snackbarHostState.currentSnackbarData?.dismiss()
                         snackbarHostState.showSnackbar(
                             message = event.message,
-                            duration = SnackbarDuration.Short
+                            duration = SnackbarDuration.Short,
                         )
                     }
                 }
@@ -83,17 +78,18 @@ fun RegistrationScreen(
     ) { padding ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier
-                .padding(padding)
-                .fillMaxSize()
-                .pointerInput(Unit) {
-                    detectTapGestures(onTap = { focusManager.clearFocus() })
-                }
+            modifier =
+                Modifier
+                    .padding(padding)
+                    .fillMaxSize()
+                    .pointerInput(Unit) {
+                        detectTapGestures(onTap = { focusManager.clearFocus() })
+                    },
         ) {
             Spacer(modifier = Modifier.height(70.dp))
             StudyAppHeader(
                 title = "Регистрация",
-                subtitle = "Введите почту"
+                subtitle = "Введите почту",
             )
             Spacer(modifier = Modifier.height(200.dp))
             CheckEmailField(
@@ -101,7 +97,7 @@ fun RegistrationScreen(
                 isEmailValid = isEmailFormatValid,
                 onEmailChange = viewModel::onEmailChanged,
                 onClearClicked = viewModel::onClearClicked,
-                onDone = { focusManager.clearFocus() }
+                onDone = { focusManager.clearFocus() },
             )
             Spacer(modifier = Modifier.height(20.dp))
             PrimaryButton(

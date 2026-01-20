@@ -2,22 +2,22 @@ package com.example.testapp.ui.screens.auth.components
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.testapp.R
 import com.example.testapp.ui.theme.labelTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.ImeAction
 
 @Composable
 fun CheckEmailField(
@@ -36,14 +36,14 @@ fun CheckEmailField(
             Text(
                 text = if (isEmailValid) "Email" else "Email Error",
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.labelTextField
+                color = MaterialTheme.colorScheme.labelTextField,
             )
         },
         placeholder = {
             Text(
                 text = "123456789@mail.ru",
                 style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.labelTextField
+                color = MaterialTheme.colorScheme.labelTextField,
             )
         },
         trailingIcon = {
@@ -52,7 +52,7 @@ fun CheckEmailField(
             }) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_close),
-                    contentDescription = "clear email field"
+                    contentDescription = "clear email field",
                 )
             }
         },
@@ -61,10 +61,11 @@ fun CheckEmailField(
         modifier = Modifier.padding(vertical = 10.dp),
         singleLine = true,
         isError = !isEmailValid,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Email,
-            imeAction = ImeAction.Done,
-        ),
-        keyboardActions = KeyboardActions(onDone = { onDone() })
+        keyboardOptions =
+            KeyboardOptions(
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Done,
+            ),
+        keyboardActions = KeyboardActions(onDone = { onDone() }),
     )
 }

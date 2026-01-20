@@ -13,8 +13,8 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.testapp.ui.screens.auth.AuthViewModel
 import com.example.testapp.ui.screens.auth.login.LoginScreen
-import com.example.testapp.ui.screens.home.HomeScreen
 import com.example.testapp.ui.screens.auth.register.RegistrationScreen
+import com.example.testapp.ui.screens.home.HomeScreen
 
 @Composable
 fun AppNavGraph() {
@@ -22,29 +22,28 @@ fun AppNavGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = Graph.Auth.route
+        startDestination = Graph.Auth.route,
     ) {
         authGraph(
-            navController = navController
+            navController = navController,
         )
 
         mainGraph(
-            navController = navController
+            navController = navController,
         )
     }
 }
 
-fun NavGraphBuilder.authGraph(
-    navController: NavController
-) {
+fun NavGraphBuilder.authGraph(navController: NavController) {
     navigation(
         route = Graph.Auth.route,
-        startDestination = Screen.Registration.route
+        startDestination = Screen.Registration.route,
     ) {
         composable(Screen.Registration.route) { backStackEntry ->
-            val parentEntry = remember(backStackEntry) {
-                navController.getBackStackEntry(Graph.Auth.route)
-            }
+            val parentEntry =
+                remember(backStackEntry) {
+                    navController.getBackStackEntry(Graph.Auth.route)
+                }
             val authViewModel: AuthViewModel = viewModel(parentEntry)
             RegistrationScreen(
                 viewModel = authViewModel,
@@ -62,15 +61,15 @@ fun NavGraphBuilder.authGraph(
                     navController.navigate(Screen.Login.route) {
                         launchSingleTop = true
                     }
-                }
+                },
             )
         }
 
-        composable(Screen.Login.route)
-        { backStackEntry ->
-            val parentEntry = remember(backStackEntry) {
-                navController.getBackStackEntry(Graph.Auth.route)
-            }
+        composable(Screen.Login.route) { backStackEntry ->
+            val parentEntry =
+                remember(backStackEntry) {
+                    navController.getBackStackEntry(Graph.Auth.route)
+                }
             val authViewModel: AuthViewModel = viewModel(parentEntry)
             LoginScreen(
                 viewModel = authViewModel,
@@ -79,31 +78,29 @@ fun NavGraphBuilder.authGraph(
                         launchSingleTop = true
                     }
                 },
-                onNavigateHome = {encodedEmail ->
+                onNavigateHome = { encodedEmail ->
                     navController.navigate(Screen.Home.createRoute(encodedEmail)) {
-                        popUpTo(Graph.Auth.route){
+                        popUpTo(Graph.Auth.route) {
                             inclusive = true
                             saveState = true
                         }
                         launchSingleTop = true
                         restoreState = true
                     }
-                }
+                },
             )
         }
     }
 }
 
-fun NavGraphBuilder.mainGraph(
-    navController: NavController
-) {
+fun NavGraphBuilder.mainGraph(navController: NavController) {
     navigation(
         route = Graph.Main.route,
-        startDestination = Screen.Home.route
+        startDestination = Screen.Home.route,
     ) {
         composable(
             route = Screen.Home.route,
-            arguments = listOf(navArgument("email") { type = NavType.StringType })
+            arguments = listOf(navArgument("email") { type = NavType.StringType }),
         ) {
             HomeScreen(
                 onLogout = {
@@ -111,7 +108,7 @@ fun NavGraphBuilder.mainGraph(
                         popUpTo(Graph.Main.route) { inclusive = true }
                         launchSingleTop = true
                     }
-                }
+                },
             )
         }
     }

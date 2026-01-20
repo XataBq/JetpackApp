@@ -22,7 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
-import com.example.testapp.ui.theme.TestAppTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,23 +39,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.testapp.R
+import com.example.testapp.ui.theme.TestAppTheme
 import com.example.testapp.ui.theme.subtitle
 
 @Composable
 fun HomeScreen(
     onLogout: () -> Unit,
-    viewModel: HomeViewModel = viewModel()
+    viewModel: HomeViewModel = viewModel(),
 ) {
     TestAppTheme {
         Scaffold(
             content = { innerPadding ->
                 Column(
-                    modifier = Modifier
-                        .padding(innerPadding)
-                        .background(Color.LightGray)
-                        .fillMaxSize(),
+                    modifier =
+                        Modifier
+                            .padding(innerPadding)
+                            .background(Color.LightGray)
+                            .fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     GreetingKamilla()
                     Spacer(modifier = Modifier.height(30.dp))
@@ -66,7 +67,7 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(20.dp))
                     Text(text = "${Uri.decode(viewModel.email)}")
                 }
-            }
+            },
         )
     }
 }
@@ -74,7 +75,7 @@ fun HomeScreen(
 @Composable
 fun GreetingKamilla() {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = "Hi, Kamilla",
@@ -83,61 +84,64 @@ fun GreetingKamilla() {
         Text(
             text = "Hi, Kamilla. Love you very much!",
             color = MaterialTheme.colorScheme.subtitle,
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.headlineMedium,
         )
     }
 }
+
 @Composable
 fun StudyAppHeader(
     title: String = "",
     subtitle: String = "",
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.headlineLarge
+            style = MaterialTheme.typography.headlineLarge,
         )
         Text(
             text = subtitle,
             color = MaterialTheme.colorScheme.subtitle,
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.headlineMedium,
         )
     }
 }
 
 @Composable
-fun MainScreenButtons(
-    onLogout: () -> Unit
-) {
+fun MainScreenButtons(onLogout: () -> Unit) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(5.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(5.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
         Button(
             onClick = {},
-            modifier = Modifier
-                .padding(horizontal = 5.dp)
-                .weight(1F)
+            modifier =
+                Modifier
+                    .padding(horizontal = 5.dp)
+                    .weight(1F),
         ) {
             Text("Kami")
         }
         Button(
             onClick = onLogout,
-            modifier = Modifier
-                .padding(horizontal = 5.dp)
-                .weight(1F)
+            modifier =
+                Modifier
+                    .padding(horizontal = 5.dp)
+                    .weight(1F),
         ) {
             Text("Logout")
         }
         Button(
             onClick = {},
-            modifier = Modifier
-                .padding(horizontal = 5.dp)
-                .weight(1F)
+            modifier =
+                Modifier
+                    .padding(horizontal = 5.dp)
+                    .weight(1F),
         ) {
             Text("My Kami")
         }
@@ -147,21 +151,22 @@ fun MainScreenButtons(
 @Composable
 fun StartImageButton() {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
             painter = painterResource(R.drawable.ic_correct),
             contentDescription = "",
-            modifier = Modifier
-                .size(100.dp)
-                .padding(5.dp)
-                .shadow(5.dp, shape = RoundedCornerShape(24.dp))
-                .clip(shape = RoundedCornerShape(24.dp))
-                .clickable(
-                    onClick = {},
-                    indication = ripple(),
-                    interactionSource = remember { MutableInteractionSource() },
-                )
+            modifier =
+                Modifier
+                    .size(100.dp)
+                    .padding(5.dp)
+                    .shadow(5.dp, shape = RoundedCornerShape(24.dp))
+                    .clip(shape = RoundedCornerShape(24.dp))
+                    .clickable(
+                        onClick = {},
+                        indication = ripple(),
+                        interactionSource = remember { MutableInteractionSource() },
+                    ),
         )
         Text(
             text = "Correct answer!",
@@ -169,7 +174,6 @@ fun StartImageButton() {
             color = MaterialTheme.colorScheme.primary,
         )
     }
-
 }
 
 @Composable
@@ -192,25 +196,25 @@ fun GreetingKamillaPreview() {
     GreetingKamilla()
 }
 
-//@Composable
-//@Preview(showBackground = true)
-//fun MainScreenButtonsPreviewLight() {
+// @Composable
+// @Preview(showBackground = true)
+// fun MainScreenButtonsPreviewLight() {
 //    TestAppTheme (
 //        darkTheme = false
 //    ){
 //        MainScreenButtons()
 //    }
-//}
+// }
 //
-//@Composable
-//@Preview(showBackground = true)
-//fun MainScreenButtonsPreviewDark() {
+// @Composable
+// @Preview(showBackground = true)
+// fun MainScreenButtonsPreviewDark() {
 //    TestAppTheme(
 //        darkTheme = true
 //    ) {
 //        MainScreenButtons()
 //    }
-//}
+// }
 
 @Composable
 @Preview(showBackground = true)
