@@ -1,7 +1,22 @@
+import org.jlleitschuh.gradle.ktlint.KtlintExtension
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ktlint)
+}
+
+configure<KtlintExtension> {
+    additionalEditorconfig.set(
+        mapOf(
+            // Разрешаем PascalCase для Compose-компонентов
+            "ktlint_function-naming" to "disabled",
+            // (опционально) ослабляем переносы, чтобы Compose не бесил
+            "ktlint_parameter-list-wrapping" to "disabled",
+            "ktlint_function-signature" to "disabled",
+        ),
+    )
 }
 
 android {
@@ -25,7 +40,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }

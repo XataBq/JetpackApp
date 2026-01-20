@@ -14,11 +14,12 @@ import kotlinx.coroutines.launch
 
 class RegistrationViewModel : ViewModel() {
     private val _uiState = MutableStateFlow<RegistrationUiState>(RegistrationUiState())
-    private val _events = MutableSharedFlow<RegistrationEvent>(
-        replay = 0,
-        extraBufferCapacity = 1,
-        onBufferOverflow = BufferOverflow.DROP_OLDEST
-    )
+    private val _events =
+        MutableSharedFlow<RegistrationEvent>(
+            replay = 0,
+            extraBufferCapacity = 1,
+            onBufferOverflow = BufferOverflow.DROP_OLDEST,
+        )
     val uiState = _uiState.asStateFlow()
     val events = _events.asSharedFlow()
     val testEmail: String = "example@king.ru"
@@ -39,24 +40,24 @@ class RegistrationViewModel : ViewModel() {
         val email = _uiState.value.email
         val isValid = EMAIL_ADDRESS.matcher(email).matches()
 
-        val newValidation = if (email.isEmpty() || !isValid) {
-            ValidationState.Error(
-                "Некорректный Email адрес. Проверьте правильность введенных данных"
-            )
-        } else if (email == testEmail) {
-            ValidationState.Error(
-                "Аккаунт с такой почтой уже зарегистрирован.\n" +
-                        "Проверьте правильность введенных данных"
-            )
-
-        } else {
-            ValidationState.Success("Аккаунт успешно зарегистрирован!")
-        }
+        val newValidation =
+            if (email.isEmpty() || !isValid) {
+                ValidationState.Error(
+                    "Некорректный Email адрес. Проверьте правильность введенных данных",
+                )
+            } else if (email == testEmail) {
+                ValidationState.Error(
+                    "Аккаунт с такой почтой уже зарегистрирован.\n" +
+                        "Проверьте правильность введенных данных",
+                )
+            } else {
+                ValidationState.Success("Аккаунт успешно зарегистрирован!")
+            }
 
         _uiState.update { it.copy(validationState = newValidation) }
 
         viewModelScope.launch {
-            when(newValidation) {
+            when (newValidation) {
                 is ValidationState.Error -> {
                     _events.tryEmit(RegistrationEvent.RegisteredError(newValidation.message))
                 }

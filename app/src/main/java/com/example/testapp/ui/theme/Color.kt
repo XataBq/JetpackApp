@@ -18,7 +18,6 @@ val labelGreyColor = Color(0xFF595959)
 val errorLight = Color(0xFFD32F2F)
 val correctLight = Color(0xFF0EAD69)
 
-
 // Темная тема
 val backgroundDark = Color(0xFF121212)
 val mainTitleColorDark = Color(0xFFEAEAEA)

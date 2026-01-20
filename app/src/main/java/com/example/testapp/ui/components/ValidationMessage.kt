@@ -15,19 +15,20 @@ import com.example.testapp.ui.models.ValidationState
 fun ValidationBlock(state: ValidationState) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-
     ) { }
     when (state) {
         ValidationState.None -> Unit
-        is ValidationState.Error -> ValidationMessage(
-            message = state.message,
-            kind = MessageKind.Error
-        )
+        is ValidationState.Error ->
+            ValidationMessage(
+                message = state.message,
+                kind = MessageKind.Error,
+            )
 
-        is ValidationState.Success -> ValidationMessage(
-            message = state.message,
-            kind = MessageKind.Success
-        )
+        is ValidationState.Success ->
+            ValidationMessage(
+                message = state.message,
+                kind = MessageKind.Success,
+            )
     }
 }
 
@@ -37,7 +38,7 @@ fun ValidationMessage(
     kind: MessageKind,
 ) {
     val color =
-        when(kind) {
+        when (kind) {
             MessageKind.Success -> MaterialTheme.colorScheme.primary
             MessageKind.Error -> MaterialTheme.colorScheme.error
         }
@@ -45,7 +46,8 @@ fun ValidationMessage(
         text = message,
         style = MaterialTheme.typography.headlineMedium,
         color = color,
-        modifier = Modifier
-            .padding(horizontal = 40.dp, vertical = 20.dp)
+        modifier =
+            Modifier
+                .padding(horizontal = 40.dp, vertical = 20.dp),
     )
 }

@@ -21,10 +21,11 @@ fun PrimaryButton(
         onClick = {
             onButtonClick()
         },
-        modifier = Modifier
-            .height(56.dp)
-            .padding(40.dp, 0.dp)
-            .fillMaxWidth(),
+        modifier =
+            Modifier
+                .height(56.dp)
+                .padding(40.dp, 0.dp)
+                .fillMaxWidth(),
     ) {
         Text(
             text = text,

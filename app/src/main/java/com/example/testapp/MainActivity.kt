@@ -13,12 +13,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TestAppTheme {
-
                 AppNavGraph()
-
             }
         }
     }
 }
-
-
