@@ -50,6 +50,16 @@ authentication flow с архитектурой, приближённой к pro
 
 ---
 
+## Code style
+В проекте используется **ktlint** для единого стиля Kotlin-кода.
+
+- Проверка: `./gradlew ktlintCheck`
+- Форматирование: `./gradlew ktlintFormat`
+
+Правила задаются в `.editorconfig`.
+
+---
+
 ##  Планы развития
 - [ ] Подключить Dependency Injection (Hilt)
 - [ ] Унифицировать обработку ошибок
