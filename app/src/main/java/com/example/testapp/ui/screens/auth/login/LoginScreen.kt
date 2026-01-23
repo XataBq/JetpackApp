@@ -1,6 +1,5 @@
 package com.example.testapp.ui.screens.auth.login
 
-import android.util.Patterns.EMAIL_ADDRESS
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,9 +13,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,10 +23,11 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.testapp.ui.components.ValidationBlock
+import com.example.testapp.ui.models.ValidationState
+import com.example.testapp.ui.screens.auth.AuthEvent
 import com.example.testapp.ui.screens.auth.AuthViewModel
 import com.example.testapp.ui.screens.auth.components.CheckEmailField
 import com.example.testapp.ui.screens.auth.components.PrimaryButton
-import com.example.testapp.ui.screens.auth.register.RegistrationEvent
 import kotlinx.coroutines.launch
 
 @Composable
@@ -39,15 +37,6 @@ fun LoginScreen(
     onNavigateHome: (String) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val isEmailFormatValid: Boolean by remember {
-        derivedStateOf {
-            if (uiState.email.isNotEmpty()) {
-                EMAIL_ADDRESS.matcher(uiState.email).matches()
-            } else {
-                true
-            }
-        }
-    }
     val focusManager = LocalFocusManager.current
     val haptic = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
@@ -56,7 +45,7 @@ fun LoginScreen(
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
-                is RegistrationEvent.RegisteredError -> {
+                is AuthEvent.AuthError -> {
                     haptic.performHapticFeedback(HapticFeedbackType.LongPress)
                     scope.launch {
                         snackbarHostState.currentSnackbarData?.dismiss()
@@ -66,8 +55,9 @@ fun LoginScreen(
                         )
                     }
                 }
-
-                RegistrationEvent.NavigateHome -> onNavigateHome(uiState.email)
+                AuthEvent.NavigateHome -> onNavigateHome(uiState.email)
+                AuthEvent.NavigateLogin -> Unit
+                AuthEvent.NavigateRegister -> Unit
             }
         }
     }
@@ -85,7 +75,7 @@ fun LoginScreen(
             ) {
                 CheckEmailField(
                     email = uiState.email,
-                    isEmailValid = isEmailFormatValid,
+                    formatError = uiState.validationState is ValidationState.Error,
                     onEmailChange = viewModel::onEmailChanged,
                     onClearClicked = viewModel::onClearClicked,
                     onDone = { -> focusManager.clearFocus() },

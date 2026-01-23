@@ -4,8 +4,6 @@ import android.util.Patterns.EMAIL_ADDRESS
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testapp.ui.models.ValidationState
-import com.example.testapp.ui.screens.auth.register.RegistrationEvent
-import com.example.testapp.ui.screens.auth.register.RegistrationUiState
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,20 +13,23 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow<RegistrationUiState>(RegistrationUiState())
+    private val _uiState = MutableStateFlow<AuthUiState>(AuthUiState())
     private val _events =
-        MutableSharedFlow<RegistrationEvent>(
+        MutableSharedFlow<AuthEvent>(
             replay = 0,
             extraBufferCapacity = 1,
             onBufferOverflow = BufferOverflow.DROP_OLDEST,
         )
     val uiState = _uiState.asStateFlow()
     val events = _events.asSharedFlow()
-    val testEmail: String = "example@king.ru"
+    val testEmail: String = "1@mail.ru"
 
     fun onEmailChanged(newEmail: String) {
         _uiState.update {
-            it.copy(email = newEmail)
+            it.copy(
+                email = newEmail,
+                validationState = ValidationState.None,
+            )
         }
     }
 
@@ -39,7 +40,7 @@ class AuthViewModel : ViewModel() {
     }
 
     fun onRegistryClick() {
-        val email = _uiState.value.email
+        val email = uiState.value.email
         val isValid = EMAIL_ADDRESS.matcher(email).matches()
 
         val newValidation =
@@ -53,7 +54,7 @@ class AuthViewModel : ViewModel() {
                         "Проверьте правильность введенных данных",
                 )
             } else {
-                ValidationState.Success("Аккаунт успешно зарегистрирован!")
+                ValidationState.Success
             }
 
         _uiState.update { it.copy(validationState = newValidation) }
@@ -61,11 +62,11 @@ class AuthViewModel : ViewModel() {
         viewModelScope.launch {
             when (newValidation) {
                 is ValidationState.Error -> {
-                    _events.tryEmit(RegistrationEvent.RegisteredError(newValidation.message))
+                    _events.tryEmit(AuthEvent.AuthError(newValidation.message))
                 }
 
                 is ValidationState.Success -> {
-                    _events.emit(RegistrationEvent.NavigateHome)
+                    _events.emit(AuthEvent.NavigateHome)
                 }
 
                 ValidationState.None -> Unit
@@ -74,14 +75,11 @@ class AuthViewModel : ViewModel() {
     }
 
     fun onLoginClick() {
-        val email = _uiState.value.email
-        val isValid = EMAIL_ADDRESS.matcher(email).matches()
+        val email = uiState.value.email
 
         val newValidation =
             if (email == testEmail) {
-                ValidationState.Success(
-                    "Добро пожаловать, ${email.split("@")[0]}!",
-                )
+                ValidationState.Success
             } else {
                 ValidationState.Error(
                     "Некорректный Email адрес. Проверьте правильность введенных данных",
@@ -93,13 +91,11 @@ class AuthViewModel : ViewModel() {
         viewModelScope.launch {
             when (newValidation) {
                 is ValidationState.Error -> {
-                    _events.tryEmit(RegistrationEvent.RegisteredError(newValidation.message))
+                    _events.tryEmit(AuthEvent.AuthError(newValidation.message))
                 }
-
                 is ValidationState.Success -> {
-                    _events.emit(RegistrationEvent.NavigateHome)
+                    _events.emit(AuthEvent.NavigateHome)
                 }
-
                 ValidationState.None -> Unit
             }
         }

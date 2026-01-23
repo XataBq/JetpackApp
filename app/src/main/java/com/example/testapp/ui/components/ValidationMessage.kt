@@ -24,11 +24,7 @@ fun ValidationBlock(state: ValidationState) {
                 kind = MessageKind.Error,
             )
 
-        is ValidationState.Success ->
-            ValidationMessage(
-                message = state.message,
-                kind = MessageKind.Success,
-            )
+        is ValidationState.Success -> Unit
     }
 }
 
