@@ -5,5 +5,5 @@ sealed class ValidationState {
 
     data class Error(val message: String) : ValidationState()
 
-    data class Success(val message: String) : ValidationState()
+    data object Success : ValidationState()
 }

@@ -51,10 +51,8 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
                     navController.navigate(Screen.Home.createRoute(encodedEmail)) {
                         popUpTo(Graph.Auth.route) {
                             inclusive = true
-                            saveState = true
                         }
                         launchSingleTop = true
-                        restoreState = true
                     }
                 },
                 onNavigateLogin = {

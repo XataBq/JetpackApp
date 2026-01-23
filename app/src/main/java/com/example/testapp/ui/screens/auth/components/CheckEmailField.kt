@@ -22,7 +22,7 @@ import com.example.testapp.ui.theme.labelTextField
 @Composable
 fun CheckEmailField(
     email: String,
-    isEmailValid: Boolean,
+    formatError: Boolean,
     onEmailChange: (String) -> Unit,
     onClearClicked: () -> Unit,
     onDone: () -> Unit,
@@ -34,7 +34,7 @@ fun CheckEmailField(
         },
         label = {
             Text(
-                text = if (isEmailValid) "Email" else "Email Error",
+                text = if (!formatError) "Email" else "Email Error",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.labelTextField,
             )
@@ -60,7 +60,7 @@ fun CheckEmailField(
         textStyle = MaterialTheme.typography.bodyMedium,
         modifier = Modifier.padding(vertical = 10.dp),
         singleLine = true,
-        isError = !isEmailValid,
+        isError = formatError,
         keyboardOptions =
             KeyboardOptions(
                 keyboardType = KeyboardType.Email,
