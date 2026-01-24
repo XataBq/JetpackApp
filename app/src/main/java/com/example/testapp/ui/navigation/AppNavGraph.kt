@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.example.testapp.ui.screens.auth.AuthViewModel
+import com.example.testapp.ui.screens.auth.forgotpassword.ForgotPasswordScreen
 import com.example.testapp.ui.screens.auth.login.LoginScreen
 import com.example.testapp.ui.screens.auth.register.RegistrationScreen
 import com.example.testapp.ui.screens.home.HomeScreen
@@ -47,16 +48,21 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
             val authViewModel: AuthViewModel = viewModel(parentEntry)
             RegistrationScreen(
                 viewModel = authViewModel,
+                onLoginScreen = {
+                    navController.navigate(Screen.Login.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onForgotPasswordScreen = {
+                    navController.navigate(Screen.ForgotPassword.route) {
+                        launchSingleTop = true
+                    }
+                },
                 onNavigateHome = { encodedEmail ->
                     navController.navigate(Screen.Home.createRoute(encodedEmail)) {
                         popUpTo(Graph.Auth.route) {
                             inclusive = true
                         }
-                        launchSingleTop = true
-                    }
-                },
-                onNavigateLogin = {
-                    navController.navigate(Screen.Login.route) {
                         launchSingleTop = true
                     }
                 },
@@ -76,6 +82,11 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
                         launchSingleTop = true
                     }
                 },
+                onForgotPasswordScreen = {
+                    navController.navigate(Screen.ForgotPassword.route) {
+                        launchSingleTop = true
+                    }
+                },
                 onNavigateHome = { encodedEmail ->
                     navController.navigate(Screen.Home.createRoute(encodedEmail)) {
                         popUpTo(Graph.Auth.route) {
@@ -87,6 +98,12 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
                     }
                 },
             )
+        }
+
+        composable(Screen.ForgotPassword.route) { backStackEntry ->
+            val parentEntry = remember(backStackEntry) { navController.getBackStackEntry(Graph.Auth.route) }
+            val authViewModel: AuthViewModel = viewModel(parentEntry)
+            ForgotPasswordScreen(authViewModel)
         }
     }
 }

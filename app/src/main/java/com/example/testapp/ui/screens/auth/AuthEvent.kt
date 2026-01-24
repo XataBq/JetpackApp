@@ -7,5 +7,7 @@ sealed class AuthEvent {
 
     data object NavigateRegister : AuthEvent()
 
+    data object NavigateForgotPassword : AuthEvent()
+
     data class AuthError(val message: String) : AuthEvent()
 }
