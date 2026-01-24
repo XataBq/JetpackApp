@@ -1,12 +1,7 @@
-package com.example.testapp.ui.screens.auth.login
+package com.example.testapp.ui.screens.auth.forgotpassword
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -22,26 +17,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.testapp.R
 import com.example.testapp.ui.models.ValidationState
 import com.example.testapp.ui.screens.auth.AuthEvent
 import com.example.testapp.ui.screens.auth.AuthViewModel
 import com.example.testapp.ui.screens.auth.components.CheckEmailField
-import com.example.testapp.ui.screens.auth.components.NavButton
-import com.example.testapp.ui.screens.auth.components.PrimaryButton
-import com.example.testapp.ui.screens.home.StudyAppHeader
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(
-    viewModel: AuthViewModel = viewModel(),
-    onRegisterScreen: () -> Unit,
-    onForgotPasswordScreen: () -> Unit,
-    onNavigateHome: (String) -> Unit,
-) {
+fun ForgotPasswordScreen(viewModel: AuthViewModel = viewModel()) {
     val uiState by viewModel.uiState.collectAsState()
     val focusManager = LocalFocusManager.current
     val haptic = LocalHapticFeedback.current
@@ -61,7 +45,8 @@ fun LoginScreen(
                         )
                     }
                 }
-                AuthEvent.NavigateHome -> onNavigateHome(uiState.email)
+
+                AuthEvent.NavigateHome -> Unit
                 AuthEvent.NavigateLogin -> Unit
                 AuthEvent.NavigateRegister -> Unit
                 AuthEvent.NavigateForgotPassword -> Unit
@@ -79,12 +64,6 @@ fun LoginScreen(
                         .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Spacer(modifier = Modifier.height(70.dp))
-                StudyAppHeader(
-                    title = "Авторизация",
-                    subtitle = "Введите почту и пароль",
-                )
-                Spacer(modifier = Modifier.height(200.dp))
                 CheckEmailField(
                     email = uiState.email,
                     formatError = uiState.validationState is ValidationState.Error,
@@ -92,40 +71,6 @@ fun LoginScreen(
                     onClearClicked = viewModel::onClearClicked,
                     onDone = { -> focusManager.clearFocus() },
                 )
-                PrimaryButton(
-                    text = stringResource(R.string.log_in),
-                    onButtonClick = {
-                        focusManager.clearFocus()
-                        viewModel.onLoginClick()
-                    },
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                Row(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 40.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    val modifier: Modifier = Modifier.weight(0.45F).height(30.dp)
-                    NavButton(
-                        modifier = modifier,
-                        text = "Registration",
-                        onButtonClick = {
-                            focusManager.clearFocus()
-                            onRegisterScreen()
-                        },
-                    )
-                    Spacer(modifier = Modifier.weight(0.1F))
-                    NavButton(
-                        modifier = modifier,
-                        text = "Forgot password",
-                        onButtonClick = {
-                            focusManager.clearFocus()
-                            onForgotPasswordScreen()
-                        },
-                    )
-                }
             }
         },
     )

@@ -13,7 +13,8 @@ sealed class Screen(val route: String) {
     data object Registration : Screen("registration")
 
     data object Login : Screen("login")
-    // позже: Forgot
+
+    data object ForgotPassword : Screen("forgot_password")
 
     // main
     data object Home : Screen("home/{email}") {
