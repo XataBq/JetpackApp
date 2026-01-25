@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AuthViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow<AuthUiState>(AuthUiState())
+    private val _uiState = MutableStateFlow(AuthUiState())
     private val _events =
         MutableSharedFlow<AuthEvent>(
             replay = 0,
