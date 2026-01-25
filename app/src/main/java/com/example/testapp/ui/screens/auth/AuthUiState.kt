@@ -4,6 +4,6 @@ import com.example.testapp.ui.models.ValidationState
 
 data class AuthUiState(
     val email: String = "",
-    val isEmailValid: Boolean = false,
+//    val isEmailValid: Boolean = false,
     val validationState: ValidationState = ValidationState.None,
 )

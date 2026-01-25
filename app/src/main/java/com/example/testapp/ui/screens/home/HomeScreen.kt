@@ -3,7 +3,6 @@ package com.example.testapp.ui.screens.home
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,7 +52,6 @@ fun HomeScreen(
                     modifier =
                         Modifier
                             .padding(innerPadding)
-                            .background(Color.LightGray)
                             .fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -65,7 +62,7 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(30.dp))
                     StartImageButton()
                     Spacer(modifier = Modifier.height(20.dp))
-                    Text(text = "${Uri.decode(viewModel.email)}")
+                    Text(text = Uri.decode(viewModel.email).substringBefore("@"))
                 }
             },
         )
@@ -78,11 +75,11 @@ fun GreetingKamilla() {
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "Hi, Kamilla",
+            text = "Welcome Home!",
             style = MaterialTheme.typography.headlineLarge,
         )
         Text(
-            text = "Hi, Kamilla. Love you very much!",
+            text = "Here is your second home. Feel like it's true",
             color = MaterialTheme.colorScheme.subtitle,
             style = MaterialTheme.typography.headlineMedium,
         )
@@ -125,7 +122,7 @@ fun MainScreenButtons(onLogout: () -> Unit) {
                     .padding(horizontal = 5.dp)
                     .weight(1F),
         ) {
-            Text("Kami")
+            Text("Settings")
         }
         Button(
             onClick = onLogout,
@@ -143,7 +140,7 @@ fun MainScreenButtons(onLogout: () -> Unit) {
                     .padding(horizontal = 5.dp)
                     .weight(1F),
         ) {
-            Text("My Kami")
+            Text("TODO")
         }
     }
 }
