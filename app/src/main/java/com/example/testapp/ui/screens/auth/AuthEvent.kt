@@ -9,5 +9,7 @@ sealed class AuthEvent {
 
     data object NavigateForgotPassword : AuthEvent()
 
-    data class AuthError(val message: String) : AuthEvent()
+    data class AuthError(
+        val message: String,
+    ) : AuthEvent()
 }
