@@ -47,6 +47,7 @@ authentication flow с архитектурой, приближённой к pro
 - Navigation Compose
 - MVVM
 - Coroutines
+- DI(Hilt)
 
 ---
 
