@@ -90,7 +90,7 @@ fun LoginScreen(
                     formatError = uiState.validationState is ValidationState.Error,
                     onEmailChange = viewModel::onEmailChanged,
                     onClearClicked = viewModel::onClearClicked,
-                    onDone = { -> focusManager.clearFocus() },
+                    onDone = { focusManager.clearFocus() },
                 )
                 PrimaryButton(
                     text = stringResource(R.string.log_in),
