@@ -3,7 +3,9 @@ package com.example.testapp.ui.screens.auth
 import android.util.Patterns.EMAIL_ADDRESS
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.testapp.domain.repository.AuthRepository
 import com.example.testapp.ui.models.ValidationState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,8 +13,12 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AuthViewModel : ViewModel() {
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(AuthUiState())
     private val _events =
         MutableSharedFlow<AuthEvent>(
@@ -66,6 +72,7 @@ class AuthViewModel : ViewModel() {
                 }
 
                 is ValidationState.Success -> {
+                    authRepository.register("2@aai.r")
                     _events.emit(AuthEvent.NavigateHome)
                 }
 

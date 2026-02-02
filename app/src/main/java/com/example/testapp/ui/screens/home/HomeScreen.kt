@@ -35,6 +35,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.testapp.R
 import com.example.testapp.ui.theme.TestAppTheme
@@ -43,7 +44,7 @@ import com.example.testapp.ui.theme.subtitle
 @Composable
 fun HomeScreen(
     onLogout: () -> Unit,
-    viewModel: HomeViewModel = viewModel(),
+    viewModel: HomeViewModel = hiltViewModel(),
 ) {
     TestAppTheme {
         Scaffold(

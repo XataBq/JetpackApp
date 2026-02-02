@@ -2,6 +2,7 @@ package com.example.testapp.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -16,6 +17,7 @@ import com.example.testapp.ui.screens.auth.forgotpassword.ForgotPasswordScreen
 import com.example.testapp.ui.screens.auth.login.LoginScreen
 import com.example.testapp.ui.screens.auth.register.RegistrationScreen
 import com.example.testapp.ui.screens.home.HomeScreen
+import com.example.testapp.ui.screens.home.HomeViewModel
 
 @Composable
 fun AppNavGraph() {
@@ -45,7 +47,7 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
                 remember(backStackEntry) {
                     navController.getBackStackEntry(Graph.Auth.route)
                 }
-            val authViewModel: AuthViewModel = viewModel(parentEntry)
+            val authViewModel: AuthViewModel = hiltViewModel(parentEntry)
             RegistrationScreen(
                 viewModel = authViewModel,
                 onLoginScreen = {
@@ -74,7 +76,7 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
                 remember(backStackEntry) {
                     navController.getBackStackEntry(Graph.Auth.route)
                 }
-            val authViewModel: AuthViewModel = viewModel(parentEntry)
+            val authViewModel: AuthViewModel = hiltViewModel(parentEntry)
             LoginScreen(
                 viewModel = authViewModel,
                 onRegisterScreen = {
@@ -102,7 +104,7 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
 
         composable(Screen.ForgotPassword.route) { backStackEntry ->
             val parentEntry = remember(backStackEntry) { navController.getBackStackEntry(Graph.Auth.route) }
-            val authViewModel: AuthViewModel = viewModel(parentEntry)
+            val authViewModel: AuthViewModel = hiltViewModel(parentEntry)
             ForgotPasswordScreen(authViewModel)
         }
     }
@@ -116,7 +118,9 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
         composable(
             route = Screen.Home.route,
             arguments = listOf(navArgument("email") { type = NavType.StringType }),
-        ) {
+        ) { backStackEntry ->
+            val parentEntry = remember(backStackEntry) { navController.getBackStackEntry(Graph.Main.route) }
+            val homeViewModel: HomeViewModel = hiltViewModel(parentEntry)
             HomeScreen(
                 onLogout = {
                     navController.navigate(Graph.Auth.route) {
@@ -124,6 +128,7 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
                         launchSingleTop = true
                     }
                 },
+                viewModel = homeViewModel
             )
         }
     }
