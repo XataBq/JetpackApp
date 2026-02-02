@@ -9,6 +9,10 @@ plugins {
     alias(libs.plugins.dagger.hilt)
 }
 
+tasks.withType<JavaCompile>().configureEach {
+    options.compilerArgs.addAll(listOf("-Xlint:deprecation", "-Xlint:unchecked"))
+}
+
 configure<KtlintExtension> {
     additionalEditorconfig.set(
         mapOf(
