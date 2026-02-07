@@ -6,8 +6,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-) : ViewModel() {
-    val email = savedStateHandle.get<String>("email").orEmpty()
-}
+class HomeViewModel
+    @Inject
+    constructor(
+        savedStateHandle: SavedStateHandle,
+    ) : ViewModel() {
+        val email = savedStateHandle.get<String>("email").orEmpty()
+    }
