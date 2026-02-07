@@ -128,7 +128,7 @@ fun NavGraphBuilder.mainGraph(navController: NavController) {
                         launchSingleTop = true
                     }
                 },
-                viewModel = homeViewModel
+                viewModel = homeViewModel,
             )
         }
     }
