@@ -19,7 +19,7 @@ class AuthRepositoryImpl
         override suspend fun register(email: String): AuthResult =
             withContext(io) {
                 when (emailValidator.validate(email)) {
-                    EmailValidationResult.Valid -> AuthResult.Success
+                    EmailValidationResult.Valid -> Unit
                     else -> return@withContext AuthResult.Error.InvalidEmail
                 }
 
@@ -35,7 +35,7 @@ class AuthRepositoryImpl
         override suspend fun login(email: String): AuthResult =
             withContext(io) {
                 when (emailValidator.validate(email)) {
-                    EmailValidationResult.Valid -> AuthResult.Success
+                    EmailValidationResult.Valid -> Unit
                     else -> return@withContext AuthResult.Error.InvalidEmail
                 }
 
