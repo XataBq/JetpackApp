@@ -1,6 +1,5 @@
 package com.example.testapp.ui.screens.auth
 
-import android.util.Patterns.EMAIL_ADDRESS
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testapp.domain.auth.AuthRepository
@@ -42,16 +41,17 @@ class AuthViewModel
 
         fun onEmailChanged(newEmail: String) {
             val result = validator.validate(newEmail)
-            val isValid = when(result) {
-                EmailValidationResult.Valid -> true
-                EmailValidationResult.Empty -> null
-                EmailValidationResult.InvalidFormat -> false
-            }
+            val isValid =
+                when (result) {
+                    EmailValidationResult.Valid -> true
+                    EmailValidationResult.Empty -> null
+                    EmailValidationResult.InvalidFormat -> false
+                }
             _uiState.update {
                 it.copy(
                     email = newEmail,
                     fieldFormatError = false,
-                    isEmailValid = isValid
+                    isEmailValid = isValid,
                 )
             }
         }
@@ -86,7 +86,7 @@ class AuthViewModel
                         _events.tryEmit(AuthEvent.AuthError("NetworkProblems. Check your Internet connection"))
                     }
                     else -> {
-                        _uiState.update {it.copy(isLoading = false)}
+                        _uiState.update { it.copy(isLoading = false) }
                         _events.tryEmit(AuthEvent.AuthError("Unknown error. Try again, please!)"))
                     }
                 }

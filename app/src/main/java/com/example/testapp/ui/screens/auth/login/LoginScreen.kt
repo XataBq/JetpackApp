@@ -26,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.testapp.R
-import com.example.testapp.ui.models.ValidationState
 import com.example.testapp.ui.screens.auth.AuthEvent
 import com.example.testapp.ui.screens.auth.AuthViewModel
 import com.example.testapp.ui.screens.auth.components.CheckEmailField

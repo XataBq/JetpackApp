@@ -27,7 +27,7 @@ fun PrimaryButton(
                 .height(56.dp)
                 .padding(40.dp, 0.dp)
                 .fillMaxWidth(),
-        enabled = enabled
+        enabled = enabled,
     ) {
         Text(
             text = text,
