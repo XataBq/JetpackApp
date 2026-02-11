@@ -28,9 +28,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.testapp.R
-import com.example.testapp.ui.models.ValidationState
 import com.example.testapp.ui.screens.auth.AuthEvent
 import com.example.testapp.ui.screens.auth.AuthViewModel
 import com.example.testapp.ui.screens.auth.components.CheckEmailField
@@ -52,6 +50,7 @@ fun RegistrationScreen(
     val haptic = LocalHapticFeedback.current
     val focusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
+    val canSubmit = (uiState.isEmailValid == true) && !uiState.isLoading
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -96,7 +95,7 @@ fun RegistrationScreen(
             Spacer(modifier = Modifier.height(200.dp))
             CheckEmailField(
                 email = uiState.email,
-                formatError = uiState.validationState is ValidationState.Error,
+                formatError = uiState.fieldFormatError,
                 onEmailChange = viewModel::onEmailChanged,
                 onClearClicked = viewModel::onClearClicked,
                 onDone = { focusManager.clearFocus() },
@@ -104,6 +103,7 @@ fun RegistrationScreen(
             PrimaryButton(
                 text = "Register",
                 onButtonClick = viewModel::onRegistryClick,
+                enabled = canSubmit,
             )
             Spacer(modifier = Modifier.height(10.dp))
             Row(

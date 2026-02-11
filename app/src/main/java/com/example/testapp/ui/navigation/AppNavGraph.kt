@@ -3,7 +3,6 @@ package com.example.testapp.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -51,6 +50,7 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
             RegistrationScreen(
                 viewModel = authViewModel,
                 onLoginScreen = {
+                    authViewModel.setFieldFormatErrorFalse()
                     navController.navigate(Screen.Login.route) {
                         launchSingleTop = true
                     }
@@ -80,6 +80,7 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
             LoginScreen(
                 viewModel = authViewModel,
                 onRegisterScreen = {
+                    authViewModel.setFieldFormatErrorFalse()
                     navController.navigate(Screen.Registration.route) {
                         launchSingleTop = true
                     }

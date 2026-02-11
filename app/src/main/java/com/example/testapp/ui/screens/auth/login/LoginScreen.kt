@@ -25,9 +25,7 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.testapp.R
-import com.example.testapp.ui.models.ValidationState
 import com.example.testapp.ui.screens.auth.AuthEvent
 import com.example.testapp.ui.screens.auth.AuthViewModel
 import com.example.testapp.ui.screens.auth.components.CheckEmailField
@@ -48,6 +46,7 @@ fun LoginScreen(
     val haptic = LocalHapticFeedback.current
     val scope = rememberCoroutineScope()
     val snackbarHostState = SnackbarHostState()
+    val canSubmit = (uiState.isEmailValid == true) && !uiState.isLoading
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -88,7 +87,7 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(200.dp))
                 CheckEmailField(
                     email = uiState.email,
-                    formatError = uiState.validationState is ValidationState.Error,
+                    formatError = uiState.fieldFormatError,
                     onEmailChange = viewModel::onEmailChanged,
                     onClearClicked = viewModel::onClearClicked,
                     onDone = { focusManager.clearFocus() },
@@ -99,6 +98,7 @@ fun LoginScreen(
                         focusManager.clearFocus()
                         viewModel.onLoginClick()
                     },
+                    enabled = canSubmit,
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(

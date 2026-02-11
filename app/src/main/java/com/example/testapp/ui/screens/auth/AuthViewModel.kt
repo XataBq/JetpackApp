@@ -1,9 +1,11 @@
 package com.example.testapp.ui.screens.auth
 
-import android.util.Patterns.EMAIL_ADDRESS
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testapp.domain.auth.AuthRepository
+import com.example.testapp.domain.auth.AuthResult
+import com.example.testapp.domain.auth.EmailValidationResult
+import com.example.testapp.domain.auth.EmailValidator
 import com.example.testapp.ui.models.ValidationState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.BufferOverflow
@@ -20,6 +22,7 @@ class AuthViewModel
     @Inject
     constructor(
         private val authRepository: AuthRepository,
+        private val validator: EmailValidator,
     ) : ViewModel() {
         private val _uiState = MutableStateFlow(AuthUiState())
         private val _events =
@@ -32,56 +35,102 @@ class AuthViewModel
         val events = _events.asSharedFlow()
         val testEmail: String = "1@mail.ru"
 
+        fun setFieldFormatErrorFalse() {
+            _uiState.update { it.copy(fieldFormatError = false) }
+        }
+
         fun onEmailChanged(newEmail: String) {
+            val result = validator.validate(newEmail)
+            val isValid =
+                when (result) {
+                    EmailValidationResult.Valid -> true
+                    EmailValidationResult.Empty -> null
+                    EmailValidationResult.InvalidFormat -> false
+                }
             _uiState.update {
                 it.copy(
                     email = newEmail,
-                    validationState = ValidationState.None,
+                    fieldFormatError = false,
+                    isEmailValid = isValid,
                 )
             }
         }
 
         fun onClearClicked() {
             _uiState.update {
-                it.copy(email = "", validationState = ValidationState.None)
+                it.copy(
+                    email = "",
+                    fieldFormatError = false,
+                    isEmailValid = null,
+                )
             }
         }
 
         fun onRegistryClick() {
             val email = uiState.value.email
-            val isValid = EMAIL_ADDRESS.matcher(email).matches()
-
-            val newValidation =
-                if (email.isEmpty() || !isValid) {
-                    ValidationState.Error(
-                        "Некорректный Email адрес. Проверьте правильность введенных данных",
-                    )
-                } else if (email == testEmail) {
-                    ValidationState.Error(
-                        "Аккаунт с такой почтой уже зарегистрирован.\n" +
-                            "Проверьте правильность введенных данных",
-                    )
-                } else {
-                    ValidationState.Success
-                }
-
-            _uiState.update { it.copy(validationState = newValidation) }
-
             viewModelScope.launch {
-                when (newValidation) {
-                    is ValidationState.Error -> {
-                        _events.tryEmit(AuthEvent.AuthError(newValidation.message))
-                    }
-
-                    is ValidationState.Success -> {
-                        authRepository.register("2@aai.r")
+                _uiState.update { it.copy(isLoading = true) }
+                when (authRepository.register(email)) {
+                    AuthResult.Success -> {
+                        _uiState.update { it.copy(isLoading = false, fieldFormatError = false) }
                         _events.emit(AuthEvent.NavigateHome)
                     }
 
-                    ValidationState.None -> Unit
+                    AuthResult.Error.InvalidEmail -> {
+                        _uiState.update { it.copy(isLoading = false, fieldFormatError = true) }
+                        _events.tryEmit(AuthEvent.AuthError("Invalid email"))
+                    }
+
+                    AuthResult.Error.Network -> {
+                        _uiState.update { it.copy(isLoading = false) }
+                        _events.tryEmit(AuthEvent.AuthError("NetworkProblems. Check your Internet connection"))
+                    }
+                    else -> {
+                        _uiState.update { it.copy(isLoading = false) }
+                        _events.tryEmit(AuthEvent.AuthError("Unknown error. Try again, please!)"))
+                    }
                 }
             }
         }
+
+//        fun onRegistryClick() {
+//            val email = uiState.value.email
+//            val isValid = EMAIL_ADDRESS.matcher(email).matches()
+//            viewModelScope.launch {
+//                authRepository.register(uiState.value.email)
+//            }
+//
+//            val newValidation =
+//                if (email.isEmpty() || !isValid) {
+//                    ValidationState.Error(
+//                        "Некорректный Email адрес. Проверьте правильность введенных данных",
+//                    )
+//                } else if (email == testEmail) {
+//                    ValidationState.Error(
+//                        "Аккаунт с такой почтой уже зарегистрирован.\n" +
+//                            "Проверьте правильность введенных данных",
+//                    )
+//                } else {
+//                    ValidationState.Success
+//                }
+//
+//            _uiState.update { it.copy(validationState = newValidation) }
+//
+//            viewModelScope.launch {
+//                when (newValidation) {
+//                    is ValidationState.Error -> {
+//                        _events.tryEmit(AuthEvent.AuthError(newValidation.message))
+//                    }
+//
+//                    is ValidationState.Success -> {
+//                        authRepository.register("2@aai.r")
+//                        _events.emit(AuthEvent.NavigateHome)
+//                    }
+//
+//                    ValidationState.None -> Unit
+//                }
+//            }
+//        }
 
         fun onLoginClick() {
             val email = uiState.value.email
@@ -100,9 +149,11 @@ class AuthViewModel
             viewModelScope.launch {
                 when (newValidation) {
                     is ValidationState.Error -> {
+                        _uiState.update { it.copy(isLoading = false, fieldFormatError = true) }
                         _events.tryEmit(AuthEvent.AuthError(newValidation.message))
                     }
                     is ValidationState.Success -> {
+                        _uiState.update { it.copy(isLoading = false, fieldFormatError = false) }
                         _events.emit(AuthEvent.NavigateHome)
                     }
                     ValidationState.None -> Unit
