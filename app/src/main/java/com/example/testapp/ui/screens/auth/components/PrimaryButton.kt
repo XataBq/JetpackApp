@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 fun PrimaryButton(
     text: String,
     onButtonClick: () -> Unit,
+    enabled: Boolean = true,
 ) {
     Button(
         shape = RoundedCornerShape(13.dp),
@@ -26,6 +27,7 @@ fun PrimaryButton(
                 .height(56.dp)
                 .padding(40.dp, 0.dp)
                 .fillMaxWidth(),
+        enabled = enabled
     ) {
         Text(
             text = text,

@@ -6,4 +6,7 @@ data class AuthUiState(
     val email: String = "",
 //    val isEmailValid: Boolean = false,
     val validationState: ValidationState = ValidationState.None,
+    val fieldFormatError: Boolean = false,
+    val isEmailValid: Boolean? = null,
+    val isLoading: Boolean = false,
 )

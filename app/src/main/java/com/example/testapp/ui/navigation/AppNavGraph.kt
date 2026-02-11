@@ -51,6 +51,7 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
             RegistrationScreen(
                 viewModel = authViewModel,
                 onLoginScreen = {
+                    authViewModel.setFieldFormatErrorFalse()
                     navController.navigate(Screen.Login.route) {
                         launchSingleTop = true
                     }
@@ -80,6 +81,7 @@ fun NavGraphBuilder.authGraph(navController: NavController) {
             LoginScreen(
                 viewModel = authViewModel,
                 onRegisterScreen = {
+                    authViewModel.setFieldFormatErrorFalse()
                     navController.navigate(Screen.Registration.route) {
                         launchSingleTop = true
                     }
