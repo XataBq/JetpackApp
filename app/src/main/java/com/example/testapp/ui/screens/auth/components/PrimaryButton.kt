@@ -3,8 +3,10 @@ package com.example.testapp.ui.screens.auth.components
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +17,7 @@ import androidx.compose.ui.unit.dp
 fun PrimaryButton(
     text: String,
     onButtonClick: () -> Unit,
+    isLoading: Boolean = false,
     enabled: Boolean = true,
 ) {
     Button(
@@ -27,11 +30,18 @@ fun PrimaryButton(
                 .height(56.dp)
                 .padding(40.dp, 0.dp)
                 .fillMaxWidth(),
-        enabled = enabled,
+        enabled = enabled && !isLoading,
     ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.headlineLarge,
-        )
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(18.dp),
+                strokeWidth = 2.dp,
+            )
+        } else {
+            Text(
+                text = text,
+                style = MaterialTheme.typography.headlineLarge,
+            )
+        }
     }
 }
