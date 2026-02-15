@@ -6,6 +6,7 @@ import com.example.testapp.domain.auth.AuthResult
 import com.example.testapp.domain.auth.EmailValidationResult
 import com.example.testapp.domain.auth.EmailValidator
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
@@ -18,6 +19,7 @@ class AuthRepositoryImpl
     ) : AuthRepository {
         override suspend fun register(email: String): AuthResult =
             withContext(io) {
+                delay(1000)
                 when (emailValidator.validate(email)) {
                     EmailValidationResult.Valid -> Unit
                     else -> return@withContext AuthResult.Error.InvalidEmail
@@ -34,6 +36,7 @@ class AuthRepositoryImpl
 
         override suspend fun login(email: String): AuthResult =
             withContext(io) {
+                delay(1000)
                 when (emailValidator.validate(email)) {
                     EmailValidationResult.Valid -> Unit
                     else -> return@withContext AuthResult.Error.InvalidEmail

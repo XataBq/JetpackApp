@@ -103,6 +103,7 @@ fun RegistrationScreen(
             PrimaryButton(
                 text = "Register",
                 onButtonClick = viewModel::onRegistryClick,
+                isLoading = uiState.isLoading,
                 enabled = canSubmit,
             )
             Spacer(modifier = Modifier.height(10.dp))

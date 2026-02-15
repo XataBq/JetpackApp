@@ -98,6 +98,7 @@ fun LoginScreen(
                         focusManager.clearFocus()
                         viewModel.onLoginClick()
                     },
+                    isLoading = uiState.isLoading,
                     enabled = canSubmit,
                 )
                 Spacer(modifier = Modifier.height(10.dp))
